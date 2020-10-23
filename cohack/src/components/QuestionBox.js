@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import "../index.css";
 
-const QuestionBox = ({ question, options,selected}) => {
+const QuestionBox = ({ question, options, selected}) => {
     const [answer, setAnswer] = useState(options);
     return (
         <div className="questionBox">

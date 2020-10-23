@@ -2,17 +2,23 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import questionAPI from './question';
-import QuestionBox from './components/QuestionBox';
-import Result from './components/ResultBox';
+import QuestionBox from "./components/QuestionBox";
+import Result from "./components/ResultBox";
 
 class Quiz extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             questionBank: [],
             score: 0,
-            responses: 0
+            responses: 0,
+            isOfAge: true
         };
+
+        this.getQuestions = this.getQuestions.bind(this);
+        this.playAgain = this.playAgain.bind(this);
+        this.computeAnswer = this.computeAnswer.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     // Function to get question from ./question
@@ -52,26 +58,90 @@ class Quiz extends Component {
     }
 
     render() {
-        return (<div className="container">
-            <div className="title">
-                Screening Protocol
-            </div>
+        const score = this.state.score;
+        const isOfAge = this.state.isOfAge;
+        const questionBank = this.state.questionBank;
+        const questionBankLength = this.state.questionBank.length;
+        const responses = this.state.responses;
 
-            {this.state.questionBank.length > 0 &&
-            this.state.responses < 5 &&
-            this.state.questionBank.map(({question, answers,
-            correct, questionId}) => <QuestionBox question=
-            {question} options={answers} key={questionId}
-            selected={answer => this.computeAnswer(answer, correct)}/>)}
-
-            {
-                this.state.responses === 5
-                    ? (<Result score={this.state.score}
-                               playAgain={this.playAgain}/>)
-                    : null
-            }
-
+        return (
+        <div className="container">
+            <StartPage
+                score={score}
+                isOfAge={isOfAge}
+                questionBank={questionBank}
+                questionBankLength={questionBankLength}
+                responses={responses}
+                loadQuestions={this.getQuestions}
+                replay={this.playAgain}
+                compute={this.computeAnswer}
+            />
         </div>)
+    }
+}
+
+class StartPage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.getQuestions = this.getQuestions.bind(this);
+        this.playAgain = this.playAgain.bind(this);
+        this.computeAnswer = this.computeAnswer.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+
+    // Function to get question from ./question
+    getQuestions() {
+        this.props.loadQuestions();
+    };
+
+    // Set state back to default and call function
+    playAgain = () => {
+        this.props.replay();
+    };
+
+    // Function to compute scores
+    computeAnswer = (answer, correctAns) => {
+        this.props.compute();
+    };
+
+    //onAnswerSelect = () => {
+    //this.refs.btn.setAttribute("disabled", "disabled");
+    //};
+
+    // componentDidMount function to get question
+    componentDidMount() {
+        this.getQuestions();
+    }
+
+    render() {
+        const isOfAge = this.props.isOfAge;
+        const score = this.props.score;
+        const questionBank = this.props.questionBank;
+        const responses = this.props.responses;
+
+        if (isOfAge) {
+            return <div>
+                <div className="title"> Screening Protocol </div>
+                {
+                    questionBank.length > 0 && responses < 5 &&
+                    questionBank.map(({question, answers,
+                    correct, questionId}) => <QuestionBox question=
+                    {question} options={answers} key={questionId}
+                    selected={answer => this.computeAnswer(answer, correct)}/>)
+                }
+                {
+                    responses === 5
+                        ? (<Result score={score}
+                                   playAgain={this.playAgain}/>)
+                        : null
+                }
+            </div>
+        } else {
+            return <div className="notOfAge">
+                This is intended only for people who are 18 years or older.
+            </div>
+        }
     }
 }
 
