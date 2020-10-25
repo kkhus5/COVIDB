@@ -4,6 +4,8 @@ import './index.css';
 import questionAPI from './question';
 import QuestionBox from "./components/QuestionBox";
 import Result from "./components/ResultBox";
+import UserWelcome from "./components/UserWelcome";
+import ToggleAge from "./components/ToggleAge";
 
 class Quiz extends Component {
     constructor(props) {
@@ -12,13 +14,15 @@ class Quiz extends Component {
             questionBank: [],
             score: 0,
             responses: 0,
-            isOfAge: true
+            isOfAge: false,
+            ageClicked: false
         };
 
         this.getQuestions = this.getQuestions.bind(this);
         this.playAgain = this.playAgain.bind(this);
         this.computeAnswer = this.computeAnswer.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.toggleAge = this.toggleAge.bind(this);
     }
 
     // Function to get question from ./question
@@ -52,6 +56,13 @@ class Quiz extends Component {
         //this.refs.btn.setAttribute("disabled", "disabled");
     //};
 
+    toggleAge = () => {
+        this.setState({
+            isOfAge: !this.state.isOfAge,
+            ageClicked: !this.state.ageClicked
+        });
+    };
+
     // componentDidMount function to get question
     componentDidMount() {
         this.getQuestions();
@@ -60,12 +71,15 @@ class Quiz extends Component {
     render() {
         const score = this.state.score;
         const isOfAge = this.state.isOfAge;
+        const ageClicked = this.state.ageClicked;
         const questionBank = this.state.questionBank;
         const questionBankLength = this.state.questionBank.length;
         const responses = this.state.responses;
 
         return (
         <div className="container">
+            {!ageClicked && <ToggleAge toggleAge={this.toggleAge}/>}
+            {isOfAge &&
             <StartPage
                 score={score}
                 isOfAge={isOfAge}
@@ -75,7 +89,16 @@ class Quiz extends Component {
                 loadQuestions={this.getQuestions}
                 replay={this.playAgain}
                 compute={this.computeAnswer}
-            />
+            />}
+
+            {!isOfAge && ageClicked ? (<div>This is intended only for people who are >= 18 years (link out to CDC) </div>
+            ) : (
+                !isOfAge && !ageClicked ? (
+                    <div> Are you 18 years or older? </div>
+                ) : (
+                    <div> </div>
+                )
+            )}
         </div>)
     }
 }
