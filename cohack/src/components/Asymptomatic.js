@@ -1,15 +1,10 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 import QuestionBox from "./QuestionBox";
-import Result from "./ResultBox";
 
-class StartSymptoms extends Component {
+class Asymptomatic extends Component {
     constructor(props) {
         super(props);
 
-        this.getQuestions = this.getQuestions.bind(this);
-        this.playAgain = this.playAgain.bind(this);
-        this.computeAnswer = this.computeAnswer.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     // Function to get question from ./question
@@ -51,4 +46,4 @@ class StartSymptoms extends Component {
     }
 }
 
-export default StartSymptoms
+export default Asymptomatic

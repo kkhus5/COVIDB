@@ -7,6 +7,10 @@ import Result from "./components/ResultBox";
 import UserWelcome from "./components/UserWelcome";
 import ToggleAge from "./components/ToggleAge";
 import StartSymptoms from "./components/StartSymptoms";
+import UnderAge from "./components/UnderAge";
+import Disagree from "./components/Disagree";
+import Minor from "./components/Minor";
+import Asymptomatic from "./components/Asymptomatic";
 
 class Quiz extends Component {
     constructor(props) {
@@ -16,7 +20,11 @@ class Quiz extends Component {
             score: 0,
             responses: 0,
             isOfAge: false,
-            ageClicked: false
+            isMinor: false,
+            ageClicked: false,
+            agree: false,
+            refresh: true,
+            atQuiz: false
         };
 
         this.getQuestions = this.getQuestions.bind(this);
@@ -24,6 +32,7 @@ class Quiz extends Component {
         this.computeAnswer = this.computeAnswer.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.toggleAge = this.toggleAge.bind(this);
+        this.toggleAgree = this.toggleAgree.bind(this);
     }
 
     // Function to get question from ./question
@@ -41,24 +50,59 @@ class Quiz extends Component {
 
     // Function to compute scores
     computeAnswer = (answer, correctAns) => {
-        if (answer === correctAns) {
-            this.setState({
-                score: this.state.score + 1
-            });
+        var i;
+        for (i = 0; i < correctAns.length; i++) {
+            if (answer === "None of the Above") {
+                this.setState({
+                   responses: 100
+                });
+            } else {
+                if (answer === correctAns[i]) {
+                    this.setState({
+                        score: this.state.score + 1
+                    });
+                }
+                this.setState({
+                    responses: this.state.responses < 5
+                        ? this.state.responses + 1
+                        : 5
+                });
+            }
         }
-        this.setState({
-            responses: this.state.responses < 5
-                ? this.state.responses + 1
-                : 5
-        });
     };
 
     toggleAge = () => {
         this.setState({
             isOfAge: !this.state.isOfAge,
-            ageClicked: !this.state.ageClicked
+            ageClicked: !this.state.ageClicked,
+            isMinor: false,
+            atQuiz: true
         });
     };
+
+    toggleAgree = () => {
+        this.setState({
+            agree: true
+        });
+    }
+
+    toggleDisagree = () => {
+        this.setState({
+            agree: false
+        });
+    }
+
+    toggleRefresh = () => {
+        this.setState({
+            refresh: false
+        });
+    }
+
+    toggleMinor = () => {
+        this.setState({
+            isMinor: true
+        });
+    }
 
     // componentDidMount function to get question
     componentDidMount() {
@@ -72,11 +116,29 @@ class Quiz extends Component {
         const questionBank = this.state.questionBank;
         const questionBankLength = this.state.questionBank.length;
         const responses = this.state.responses;
+        const agree = this.state.agree;
+        const refresh = this.state.refresh;
+        const atQuiz = this.state.atQuiz;
+        const isMinor = this.state.isMinor;
 
         return (
         <div className="container">
-            {!ageClicked && <ToggleAge toggleAge={this.toggleAge}/>}
-            {isOfAge &&
+            {refresh && <UserWelcome toggleAgree={this.toggleAgree}
+                                     toggleDisagree={this.toggleDisagree}
+                                     toggleRefresh={this.toggleRefresh}/>}
+            {(agree && !atQuiz && !isMinor) ? (
+                <ToggleAge toggleAge={this.toggleAge} toggleMinor={this.toggleMinor}/>
+            ) : (
+                (!refresh && !agree) ? (
+                    <Disagree />
+                ) : (
+                    <div> </div>
+                )
+            )}
+
+            {isMinor && <Minor />}
+
+            {isOfAge && responses < 7 &&
             <StartSymptoms
                 score={score}
                 isOfAge={isOfAge}
@@ -88,18 +150,19 @@ class Quiz extends Component {
                 compute={this.computeAnswer}
             />}
 
-            {!isOfAge && ageClicked ? (
-                <div>
-                    <h2> This is intended only for people who are >= 18 years </h2>
-                    <a href="https://www.cdc.gov/"> Visit the Centers for Disease Control and Prevention website for more information. </a>
-                </div>
-            ) : (
-                !isOfAge && !ageClicked ? (
-                    <div> Are you 18 years or older? </div>
-                ) : (
-                    <div> </div>
-                )
-            )}
+            {responses === 100 &&
+                <Asymptomatic
+                    score={score}
+                    isOfAge={isOfAge}
+                    questionBank={questionBank}
+                    questionBankLength={questionBankLength}
+                    responses={responses}
+                    loadQuestions={this.getQuestions}
+                    replay={this.playAgain}
+                    compute={this.computeAnswer}
+                />
+            }
+
         </div>)
     }
 }
