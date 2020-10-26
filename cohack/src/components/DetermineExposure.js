@@ -1,14 +1,10 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 import QuestionBox from "./QuestionBox";
 
-class StartSymptoms extends Component {
+class DetermineExposure extends Component {
     constructor(props) {
         super(props);
 
-        this.getQuestions = this.getQuestions.bind(this);
-        this.playAgain = this.playAgain.bind(this);
-        this.computeAnswer = this.computeAnswer.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     // Function to get question from ./question
@@ -32,20 +28,22 @@ class StartSymptoms extends Component {
     }
 
     render() {
+        const isOfAge = this.props.isOfAge;
+        const score = this.props.score;
         const questionBank = this.props.questionBank;
         const responses = this.props.responses;
 
         return <div>
-            <div className="title"> Preliminary Screening Protocol </div>
+            <div className="title"> Potential Exposure </div>
             {
                 questionBank.length > 0 && responses < 7 &&
                 questionBank.map(({question, answers,
-                correct, questionId}) => <QuestionBox question=
-                {question} options={answers} key={questionId}
-                selected={answer => this.computeAnswer(answer, correct)}/>)
+                                      correct, questionId}) => <QuestionBox question=
+                                                                                {question} options={answers} key={questionId}
+                                                                            selected={answer => this.computeAnswer(answer, correct)}/>)
             }
         </div>
     }
 }
 
-export default StartSymptoms
+export default DetermineExposure

@@ -5,10 +5,14 @@ class Asymptomatic extends Component {
     constructor(props) {
         super(props);
 
+        this.getAsymptomaticQuestions = this.getAsymptomaticQuestions.bind(this);
+        this.playAgain = this.playAgain.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.computeAsymptomatic = this.computeAsymptomatic.bind(this);
     }
 
     // Function to get question from ./question
-    getQuestions() {
+    getAsymptomaticQuestions() {
         this.props.loadQuestions();
     };
 
@@ -18,29 +22,45 @@ class Asymptomatic extends Component {
     };
 
     // Function to compute scores
-    computeAnswer = (answer, correctAns) => {
+    computeAsymptomatic = (answer, correctAns) => {
         this.props.compute(answer, correctAns);
     };
 
     // componentDidMount function to get question
     componentDidMount() {
-        this.getQuestions();
+        this.getAsymptomaticQuestions();
     }
 
     render() {
-        const isOfAge = this.props.isOfAge;
-        const score = this.props.score;
-        const questionBank = this.props.questionBank;
-        const responses = this.props.responses;
+        const asymptomaticBank = this.props.questionBank;
+        const asymptomatic = this.props.responses;
 
         return <div>
-            <div className="title"> Screening Protocol </div>
+            <div className="title"> Asymptomatic Screening Protocol </div>
             {
-                questionBank.length > 0 && responses < 7 &&
-                questionBank.map(({question, answers,
+                asymptomaticBank.length > 0 && asymptomatic === 0 &&
+                asymptomaticBank.map(({question, answers,
                 correct, questionId}) => <QuestionBox question=
                 {question} options={answers} key={questionId}
-                selected={answer => this.computeAnswer(answer, correct)}/>)
+                selected={answer => this.computeAsymptomatic(answer, correct)}/>)
+            }
+            { asymptomatic === 1 &&
+            asymptomaticBank.map(({question, answers,
+            correct, questionId}) => <QuestionBox question=
+            {question} options={answers} key={questionId}
+            selected={answer => this.computeAsymptomatic(answer, correct)}/>)
+            }
+            { asymptomatic === 2 && <div>
+                <p> Testing is not recommended at this time. </p>
+                <p> You may be asked to wear a mask. </p>
+                <p> Practice social distancing. </p>
+                <p> Monitor symptoms:
+                    <ul>
+                        <li> Check your temperature twice daily. </li>
+                        <li> Contact your provider if symptoms worsen. </li>
+                    </ul>
+                </p>
+            </div>
             }
         </div>
     }

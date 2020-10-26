@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import UserWelcome from "./UserWelcome";
 
 class ToggleAge extends Component {
     constructor(props) {
