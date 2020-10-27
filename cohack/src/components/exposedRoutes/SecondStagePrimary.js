@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import QuestionBox from "../QuestionBox";
-import exposedAPI from "../../symptomatic/exposed";
-import ThirdStageSecondary from "./ThirdStageSecondary";
+import exposedAPI from "../../symptomaticQuestions/exposed";
+import ThirdStagePrimary from "./ThirdStagePrimary";
 
-class SecondStageSecondary extends Component {
+class SecondStagePrimary extends Component {
     constructor(props) {
         super(props);
 
@@ -51,29 +51,29 @@ class SecondStageSecondary extends Component {
         return (
             <div>
                 {!clickedNext &&
-                questionBank.map(({question, answers,
-                                      correct, questionId}) => <QuestionBox question=
-                                                                                {question} options={answers} key={questionId}
-                                                                            selected={answer => this.computeAnswer(answer, correct)}/>)
+                    questionBank.map(({question, answers,
+                    correct, questionId}) => <QuestionBox question=
+                    {question} options={answers} key={questionId}
+                    selected={answer => this.computeAnswer(answer, correct)}/>)
                 }
                 {!clickedNext &&
                     <button onClick={this.clickNext}> Next </button>
                 }
                 {clickedNext && !noHome &&
-                    <ThirdStageSecondary senior={isSenior}/>
+                    <ThirdStagePrimary senior={isSenior}/>
                 }
                 {clickedNext && noHome &&
-                <div>
-                    <h2> You may be eligible for COVID-19 testing. </h2>
-                    <p>
-                        Contact a medical provider in the care center, nursing home,
-                        or homeless shelter where you live.
-                    </p>
-                </div>
+                    <div>
+                        <h2> You may be eligible for COVID-19 testing. </h2>
+                        <p>
+                            Contact a medical provider in the care center, nursing home,
+                            or homeless shelter where you live.
+                        </p>
+                    </div>
                 }
             </div>
         )
     }
 }
 
-export default SecondStageSecondary
+export default SecondStagePrimary

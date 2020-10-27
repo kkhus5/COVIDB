@@ -11,9 +11,9 @@ const qBank = [
         question:
             "In the last 2 weeks, have you had any of the following exposures?",
         answers: ["Contact with a COVID-19 positive person", "International Travel",
-        "Live in or have visited a place where COVID-19 is widespread", "No exposure"],
+        "Live in or have visited a place where COVID-19 is widespread", "No determineExposureQuestions"],
         correct: ["Contact with a COVID-19 positive person", "International Travel",
-            "Live in or have visited a place where COVID-19 is widespread", "No exposure"],
+            "Live in or have visited a place where COVID-19 is widespread", "No determineExposureQuestions"],
         questionId: "1"
     },
 ];

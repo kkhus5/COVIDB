@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import QuestionBox from "../QuestionBox";
-import exposedAPI from "../../symptomatic/exposed";
+import exposedAPI from "../../symptomaticQuestions/exposed";
 
 class FourthStagePrimary extends Component {
     constructor(props) {

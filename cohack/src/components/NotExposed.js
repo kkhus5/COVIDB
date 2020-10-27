@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import QuestionBox from "./QuestionBox";
-import notExposedAPI from "../symptomatic/notexposed";
+import notExposedAPI from "../symptomaticQuestions/notexposed";
 
 class NotExposed extends Component {
     constructor(props) {
