@@ -34,6 +34,7 @@ class Asymptomatic extends Component {
     render() {
         const asymptomaticBank = this.props.questionBank;
         const asymptomatic = this.props.responses;
+        const isSenior = this.props.senior;
 
         return <div>
             <div className="title"> Asymptomatic Screening Protocol </div>
@@ -56,7 +57,39 @@ class Asymptomatic extends Component {
                 <p> Practice social distancing. </p>
                 <p> Monitor symptoms:
                     <ul>
-                        <li> Check your temperature twice daily. </li>
+                        <li> Check your temperature twice daily for 14 days. </li>
+                        <li> Contact your provider if symptoms worsen. </li>
+                    </ul>
+                </p>
+            </div>
+            }
+            { asymptomatic === -1 &&
+            asymptomaticBank.map(({question, answers,
+            correct, questionId}) => <QuestionBox question=
+            {question} options={answers} key={questionId}
+            selected={answer => this.computeAsymptomatic(answer, correct)}/>)
+            }
+            { (asymptomatic === 3 || asymptomatic === -3) && !isSenior && <div>
+                <p> Testing is not recommended at this time. </p>
+                <p> Practice social distancing. </p>
+            </div>
+            }
+            { (asymptomatic === 3 || asymptomatic === -3) && isSenior && <div>
+                <p> Testing is not recommended at this time. </p>
+                <p> Practice social distancing. </p>
+                <p>
+                    Since you identified yourself as being 65 years of age or over, obtain a
+                    30 day supply of medications. This is also pertinent if you have a
+                    chronic condition.
+                </p>
+            </div>
+            }
+            { asymptomatic === -2 && <div>
+                <p> Testing is not recommended at this time. </p>
+                <p> Home quarantine. </p>
+                <p> Monitor symptoms:
+                    <ul>
+                        <li> Check your temperature twice daily for 14 days. </li>
                         <li> Contact your provider if symptoms worsen. </li>
                     </ul>
                 </p>

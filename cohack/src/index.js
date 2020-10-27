@@ -102,14 +102,32 @@ class Quiz extends Component {
                 this.setState({
                     asymptomatic: this.state.asymptomatic - 1,
                 });
+
+                asymptomaticAPI(2).then(question => {
+                    this.setState({
+                        asymptomaticBank: question
+                    });
+                });
             } else if (answer === "Contact with a COVID-19 positive person" ||
                 answer === "International Travel") {
                 this.setState({
                     asymptomatic: this.state.asymptomatic + 1
                 });
-            } else if (answer === "Live in or have visited a place where COVID-19 is widespread") {
+            } else if (answer === "Live in or have visited a place where COVID-19 is widespread" ||
+                        answer === "No exposure") {
                 this.setState({
                     asymptomatic: this.state.asymptomatic + 2
+                });
+            } else if (this.state.asymptomatic === -1 &&
+                (answer === "Contact with a COVID-19 positive person" ||
+                    answer === "International Travel" ||
+                    answer === "Live in or have visited a place where COVID-19 is widespread")) {
+                this.setState({
+                    asymptomatic: this.state.asymptomatic - 1
+                });
+            } else if (this.state.asymptomatic === -1 && answer === "No exposure") {
+                this.setState({
+                    asymptomatic: this.state.asymptomatic - 2
                 });
             }
         }
@@ -218,6 +236,7 @@ class Quiz extends Component {
                     loadQuestions={this.getAsymptomaticQuestions}
                     replay={this.playAgain}
                     compute={this.computeAsymptomatic}
+                    senior={isSenior}
                 />
             }
 
