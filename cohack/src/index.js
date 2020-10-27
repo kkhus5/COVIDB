@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import App from './App';
 import questionAPI from './question';
 import asymptomaticAPI from './asymptomatic';
 import exposureAPI from './exposure';
@@ -232,8 +233,10 @@ class Quiz extends Component {
 
             {isMinor && <Minor />}
 
-            {!isSenior && !atQuiz && isOfAge && !isMinor && !refresh && <ToggleSenior toggleSenior={this.toggleSenior}
-                                                  toggleNotSenior={this.toggleNotSenior}/>}
+            {!isSenior && !atQuiz && isOfAge && !isMinor && !refresh &&
+                <ToggleSenior toggleSenior={this.toggleSenior}
+                              toggleNotSenior={this.toggleNotSenior}/>
+            }
 
             {(isSenior || !isSenior) && atQuiz && responses !== -1 && responses !== 1 &&
             <StartSymptoms
@@ -268,4 +271,6 @@ class Quiz extends Component {
     }
 }
 
-ReactDOM.render(<Quiz/>, document.getElementById("root"));
+export default Quiz
+
+ReactDOM.render(<App/>, document.getElementById("root"));
