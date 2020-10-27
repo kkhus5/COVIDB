@@ -23,7 +23,7 @@ class Exposed extends Component {
     }
 
     getQuestions = () => {
-        exposedAPI().then(question => {
+        exposedAPI(1).then(question => {
             this.setState({questionBank: question});
         });
     }
