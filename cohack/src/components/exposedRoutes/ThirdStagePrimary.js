@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import QuestionBox from "../QuestionBox";
 import exposedAPI from "../../symptomaticQuestions/exposed";
 import FourthStagePrimary from "./FourthStagePrimary";
+import Button from "react-bootstrap/Button";
 
 class ThirdStagePrimary extends Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class ThirdStagePrimary extends Component {
                     selected={answer => this.computeAnswer(answer, correct)}/>)
                 }
                 {!clickedNext &&
-                    <button onClick={this.clickNext}> Next </button>
+                <Button onClick={this.clickNext.bind(this)}> Next </Button>
                 }
                 {clickedNext && !worked &&
                     <FourthStagePrimary senior={isSenior}/>
