@@ -10,7 +10,7 @@ const qBank = [
                         <Card.Title className="font-weight-bolder">
                             Do you have any of the following?
                         </Card.Title>
-                        <Card.Text> Select any. </Card.Text>
+                        <Card.Text> Select any then click next to continue. </Card.Text>
                     </Card.Body>
                 </Card>
             </div>,
