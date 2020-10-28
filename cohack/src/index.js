@@ -117,7 +117,7 @@ class Quiz extends Component {
                     asymptomatic: this.state.asymptomatic + 1
                 });
             } else if (this.state.asymptomatic === 1 && (answer === "Live in or have visited a place where COVID-19 is widespread" ||
-                        answer === "No determineExposureQuestions")) {
+                        answer === "No")) {
                 this.setState({
                     asymptomatic: this.state.asymptomatic + 2
                 });
@@ -128,7 +128,7 @@ class Quiz extends Component {
                 this.setState({
                     asymptomatic: this.state.asymptomatic - 1
                 });
-            } else if (this.state.asymptomatic === -1 && answer === "No determineExposureQuestions") {
+            } else if (this.state.asymptomatic === -1 && answer === "No") {
                 this.setState({
                     asymptomatic: this.state.asymptomatic - 2
                 });

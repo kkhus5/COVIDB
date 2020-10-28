@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import QuestionBox from "../QuestionBox";
-import exposedAPI from "../../symptomaticQuestions/exposed";
-import FourthStageSecondary from "./FourthStageSecondary";
+import notexposedAPI from "../../symptomaticQuestions/notexposed";
+import FourthStageOnePrimary from "./FourthStageOnePrimary";
 
-class ThirdStageSecondary extends Component {
+class ThirdStageOnePrimary extends Component {
     constructor(props) {
         super(props);
 
@@ -15,7 +15,7 @@ class ThirdStageSecondary extends Component {
     }
 
     getQuestions = () => {
-        exposedAPI(3).then(question => {
+        notexposedAPI(3).then(question => {
             this.setState({questionBank: question});
         });
     }
@@ -51,16 +51,16 @@ class ThirdStageSecondary extends Component {
         return (
             <div>
                 {!clickedNext &&
-                    questionBank.map(({question, answers,
-                    correct, questionId}) => <QuestionBox question=
-                    {question} options={answers} key={questionId}
-                    selected={answer => this.computeAnswer(answer, correct)}/>)
+                questionBank.map(({question, answers,
+                                      correct, questionId}) => <QuestionBox question=
+                                                                                {question} options={answers} key={questionId}
+                                                                            selected={answer => this.computeAnswer(answer, correct)}/>)
                 }
                 {!clickedNext &&
                 <button onClick={this.clickNext}> Next </button>
                 }
                 {clickedNext && !worked &&
-                <FourthStageSecondary senior={isSenior}/>
+                <FourthStageOnePrimary senior={isSenior}/>
                 }
                 {clickedNext && worked &&
                 <div>
@@ -75,4 +75,4 @@ class ThirdStageSecondary extends Component {
     }
 }
 
-export default ThirdStageSecondary
+export default ThirdStageOnePrimary
